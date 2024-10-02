@@ -167,7 +167,7 @@ export class Table<T extends { id: number }> {
     item: T
   ): void {
     if (column.key === "action") {
-      const input = this.createRowSelectionCheckbox(item.id);
+      const input = this.createRowSelectionCheckbox();
       cell.appendChild(input);
     } else {
       cell.textContent = item[column.key] as string;
@@ -184,10 +184,10 @@ export class Table<T extends { id: number }> {
     }
   }
 
-  private createRowSelectionCheckbox(id: string | number): HTMLInputElement {
+  private createRowSelectionCheckbox(): HTMLInputElement {
     const input = document.createElement("input");
     input.type = "checkbox";
-    input.addEventListener("change", (e) => this.handleRowSelection(e, id));
+    input.addEventListener("change", (e) => this.handleRowSelection(e));
     return input;
   }
 
@@ -369,7 +369,7 @@ export class Table<T extends { id: number }> {
     rows.forEach((row) => this.updateRowSelection(row, checkbox.checked));
   }
 
-  private handleRowSelection(e: Event, id: string | number): void {
+  private handleRowSelection(e: Event): void {
     const checkbox = e.target as HTMLInputElement;
     const tr = checkbox.closest("tr") as HTMLTableRowElement;
     this.updateRowSelection(tr, checkbox.checked);
@@ -507,7 +507,7 @@ export class Table<T extends { id: number }> {
       return;
     }
 
-    const selectedRowId = this.selectedRows.values().next().value;
+    const selectedRowId = this.selectedRows.values().next().value as string;
     const index = this.options.data.findIndex(
       (item) => String(item.id) === selectedRowId
     );
