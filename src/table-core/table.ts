@@ -1,5 +1,8 @@
 import { TableOptions, TableColumn } from "../types/table.types";
 
+/**
+
+ */
 export class Table<T extends { id: number }> {
   private options: TableOptions<T>;
   private currentPage: number;
@@ -10,6 +13,21 @@ export class Table<T extends { id: number }> {
   private itemsPerPage: number;
   private selectedRows: Set<string | number> = new Set();
 
+  /**
+   * Creates an instance of the Table class.
+   *
+   * @param {TableOptions<T>} options The options for the table.
+   * @param {T[]} options.data The data to be displayed in the table.
+   * @param {string} [options.paginationContainer] The id of the container element
+   *   to render the pagination controls.
+   * @param {number} [options.itemsPerPage=10] The number of items to display per
+   *   page.
+   * @param {TableColumn<T>[]} options.columns The columns to display in the
+   *   table.
+   * @param {boolean} [options.persistData=false] Whether to persist the data
+   *   between sessions.
+   * @param {string} [options.persistKey] The key to use for persisting the data.
+   */
   constructor(options: TableOptions<T>) {
     this.options = options;
     this.currentPage = 1;
@@ -24,6 +42,10 @@ export class Table<T extends { id: number }> {
     this.renderTable();
   }
 
+  /**
+   * Initializes the columns to include an action column with a checkbox
+   * for selecting rows.
+   */
   private initializeColumns() {
     const actionColumn: TableColumn<T> = {
       key: "action",
@@ -35,6 +57,10 @@ export class Table<T extends { id: number }> {
     this.options.columns = [actionColumn, ...this.options.columns];
   }
 
+  /**
+   * Persists the data to local storage if the `persistData` option is set to
+   * `true` and a `persistKey` is provided.
+   */
   private persistData() {
     if (this.options.persistData && this.options.persistKey) {
       localStorage.setItem(
@@ -44,6 +70,10 @@ export class Table<T extends { id: number }> {
     }
   }
 
+  /**
+   * Loads the persisted data from local storage if the `persistData` option is
+   * set to `true` and a `persistKey` is provided.
+   */
   private loadPersistedData(): void {
     if (this.options.persistData && this.options.persistKey) {
       const persistedData = localStorage.getItem(this.options.persistKey);
@@ -53,6 +83,12 @@ export class Table<T extends { id: number }> {
     }
   }
 
+  /**
+   * Renders the table and its elements. First, it clears the table element's
+   * innerHTML, then renders the table header and body. If the `paginationContainer`
+   * is provided, it renders the pagination as well. Finally, it sets up event
+   * listeners for the table's elements.
+   */
   private renderTable() {
     this.tableElement.innerHTML = "";
     this.renderTableHeader();
@@ -61,6 +97,12 @@ export class Table<T extends { id: number }> {
     this.attachEventListeners();
   }
 
+  /**
+   * Renders the table header and its elements. It iterates over the provided
+   * columns and creates a <th> element for each one, setting its content and
+   * attributes accordingly. Finally, it appends the table header to the table
+   * element.
+   */
   private renderTableHeader() {
     const tableHeader = document.createElement("thead");
     const tableHeaderRow = document.createElement("tr");
@@ -132,6 +174,12 @@ export class Table<T extends { id: number }> {
     }
   }
 
+  /**
+   * Returns a subset of the data array based on the current page number
+   * and the number of items per page.
+   *
+   * @returns {T[]} The subset of the data array for the current page.
+   */
   private getPaginatedData(): T[] {
     const startIdx = (this.currentPage - 1) * this.itemsPerPage;
     const endIdx = startIdx + this.itemsPerPage;
@@ -484,6 +532,12 @@ export class Table<T extends { id: number }> {
     cell.textContent = originalValue;
   }
 
+  /**
+   * Deletes all selected rows from the table data. If there are no
+   * selected rows, this does nothing. After deleting the rows, the
+   * table body and pagination are re-rendered, and the "select all"
+   * checkbox is updated.
+   */
   public deleteSelectedRows(): void {
     console.log(this.selectedRows);
     if (this.selectedRows.size === 0) return;
@@ -497,6 +551,17 @@ export class Table<T extends { id: number }> {
     this.updateSelectAllCheckbox();
   }
 
+  /**
+   * Moves the selected row in the specified direction by one position, if
+   * possible. If no row is selected, or if the selected row cannot be moved
+   * in the specified direction, this function does nothing.
+   *
+   * @param direction - The direction to move the row. Must be either "up"
+   *     or "down". If "up", the row will be moved up one position. If "down",
+   *     the row will be moved down one position.
+   * @throws {Error} If an attempt is made to move a row that is not selected,
+   *     or if the row cannot be moved in the specified direction.
+   */
   public moveRow(direction: "up" | "down"): void {
     if (this.selectedRows.size === 0) {
       alert("No row selected");
@@ -552,6 +617,10 @@ export class Table<T extends { id: number }> {
     }
   }
 
+  /**
+   * Adds a new row to the top of the table with the given data
+   * @param data The data to add to the table
+   */
   public addNewRow(data: T): void {
     this.options.data.unshift(data);
     this.renderTableBody();
@@ -562,6 +631,10 @@ export class Table<T extends { id: number }> {
     return this.options.data.length;
   }
 
+  /**
+   * Exports the table data to a CSV file.
+   * @param filename - The name of the file to export (default: "table_data.csv").
+   */
   public exportToCSV = (filename: string = "table_data.csv") => {
     // remove the html tags and action header
     const headers = this.options.columns
@@ -603,6 +676,12 @@ export class Table<T extends { id: number }> {
     }
   };
 
+  /**
+   * Returns the HTMLTableElement of the table. This is useful if you want to
+   * append the table to a specific element in the DOM, or if you want to
+   * access the table's DOM element directly.
+   * @returns The HTMLTableElement of the table.
+   */
   public getTableElement(): HTMLTableElement {
     return this.tableElement;
   }
