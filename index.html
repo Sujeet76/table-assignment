@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Reusable Table Component</title>
+
+    <link
+      rel="stylesheet"
+      href="./src/style.css"
+    />
+  </head>
+  <body>
+    <div
+      class="grid-bg"
+      aria-label="hidden"
+    ></div>
+    <section class="container">
+      <div class="title-container">
+        <h1>Chemical Supplies</h1>
+        <div class="header-action-button-container">
+          <button
+            aria-label="add new entry"
+            id="show-model-button"
+            class="active flex-center"
+          >
+            +
+          </button>
+          <button
+            class="active"
+            id="move-down-button"
+          >
+            <img
+              src="/images/arrow-up-blue.svg"
+              alt="move down"
+              class="rotate-90"
+            />
+          </button>
+          <button
+            class="active"
+            id="move-up-button"
+          >
+            <img
+              src="/images/arrow-up-white.svg"
+              alt="move up"
+            />
+          </button>
+
+          <button
+            id="delete-button"
+            aria-label="delete selected entries"
+            class="active"
+          >
+            <img
+              src="/images/delete.svg"
+              alt="delete selected rows"
+            />
+          </button>
+          <button
+            aria-label="save"
+            class="active"
+            id="export-button"
+          >
+            <img
+              src="/images/save.svg"
+              alt="delete selected rows"
+            />
+          </button>
+        </div>
+      </div>
+      <div id="invoiceTableContainer"></div>
+      <div id="paginationContainer"></div>
+    </section>
+
+    <div
+      class="model-overlay hide-model"
+      id="model"
+    >
+      <div class="model-container">
+        <div>
+          <h4 class="model-title">
+            Enter the details of the chemicals you need
+          </h4>
+          <p class="model-description">
+            please fill all the details of the chemicals you need
+          </p>
+        </div>
+
+        <div class="model-form-container">
+          <form id="invoice-form">
+            <div class="form-group">
+              <label for="chemical-name">Chemical Name</label>
+              <input
+                required
+                type="text"
+                id="chemical-name"
+                name="chemical-name"
+                placeholder="eg. Sulphur Acid"
+              />
+            </div>
+            <div class="form-group">
+              <label for="vendor">Vendor</label>
+              <input
+                required
+                type="text"
+                id="vendor"
+                name="vendor"
+                placeholder="eg. ChemCorp"
+              />
+            </div>
+            <div class="form-group">
+              <label for="density">Density</label>
+              <input
+                required
+                type="number"
+                id="density"
+                name="density"
+                placeholder="eg. 1.84"
+                min="1"
+              />
+              <p>Density greater then 1</p>
+            </div>
+            <div class="form-group">
+              <label for="packaging">Packaging</label>
+              <input
+                required
+                type="text"
+                id="packaging"
+                name="packaging"
+                placeholder="eg. bag"
+              />
+            </div>
+            <div class="form-group">
+              <label for="package-size">Package Size</label>
+              <input
+                required
+                type="number"
+                id="package-size"
+                name="package-size"
+                placeholder="eg. 200"
+                min="1"
+              />
+              <p>package size greater then 1</p>
+            </div>
+            <div class="form-group">
+              <label for="unit">Unit</label>
+              <input
+                required
+                type="text"
+                id="unit"
+                name="unit"
+                placeholder="eg. kg"
+              />
+            </div>
+            <div class="form-group">
+              <label for="quantity">Quantity</label>
+              <input
+                required
+                type="number"
+                id="quantity"
+                name="quantity"
+                placeholder="eg. 100"
+                min="5"
+              />
+              <p>Quantity greater then 5</p>
+            </div>
+            <div class="form-group">
+              <label for="viscosity">Viscosity</label>
+              <input
+                required
+                type="number"
+                id="viscosity"
+                name="viscosity"
+                placeholder="eg. 100"
+                min="1"
+              />
+              <p>Viscosity greater then 0</p>
+            </div>
+            <div class="form-buttons col-span-2">
+              <button
+                type="submit"
+                id="submit-button"
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                id="cancel-button"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="./src/main.ts"
+      type="module"
+    ></script>
+  </body>
+</html>
